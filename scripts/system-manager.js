@@ -80,11 +80,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         registerStyles () {
             return {
-                template: {
-                    class: 'tah-style-template-style', // The class to add to first DIV element
-                    file: 'tah-template-style', // The file without the css extension
+                drawSteel: {
+                    class: 'tah-style-draw-steel-style', // The class to add to first DIV element
+                    file: 'tah-draw-steel-style', // The file without the css extension
                     moduleId: MODULE.ID, // The module ID
-                    name: 'Template Style' // The name to display in the Token Action HUD Core 'Style' module setting
+                    name: 'Draw Steel Style' // The name to display in the Token Action HUD Core 'Style' module setting
                 }
             }
         }

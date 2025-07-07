@@ -15,16 +15,51 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     DEFAULTS = {
         layout: [
             {
-                nestId: 'inventory',
-                id: 'inventory',
-                name: coreModule.api.Utils.i18n('Template.Inventory'),
+                nestId: 'action',
+                id: 'action',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Type.Action'),
                 groups: [
-                    { ...groups.weapons, nestId: 'inventory_weapons' },
-                    { ...groups.armor, nestId: 'inventory_armor' },
-                    { ...groups.equipment, nestId: 'inventory_equipment' },
-                    { ...groups.consumables, nestId: 'inventory_consumables' },
-                    { ...groups.containers, nestId: 'inventory_containers' },
-                    { ...groups.treasure, nestId: 'inventory_treasure' }
+                    { ...groups.action, nestId: 'action_action' }
+                ]
+            },
+            {
+                nestId: 'maneuver',
+                id: 'maneuver',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Type.Maneuver'),
+                groups: [
+                    { ...groups.maneuver, nestId: 'maneuver_maneuver' },
+                    { ...groups.freeManeuver, nestId: 'maneuver_free-maneuver' }
+                ]
+            },
+            {
+                nestId: 'triggered',
+                id: 'triggered',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Type.Triggered'),
+                groups: [
+                    { ...groups.triggered, nestId: 'triggered_triggered' },
+                    { ...groups.freeTriggered, nestId: 'triggered_free-triggered' }
+                ]
+            },
+            {
+                nestId: 'character',
+                id: 'character',
+                name: coreModule.api.Utils.i18n('TYPES.Actor.character'),
+                groups: [
+                    { ...groups.freeStrike, nestId: 'character_free-strike' },
+                    { ...groups.characteristic, nestId: 'character_characteristic'},
+                    { ...groups.recoveries, nestId: 'character_recoveries' },
+                    { ...groups.heroTokens, nestId: 'character_hero-tokens' },
+                    { ...groups.respite, nestId: 'character_respite' }
+                ]
+            },
+            {
+                nestId: 'effects',
+                id: 'effects',
+                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.Effects'),
+                groups: [
+                    { ...groups.effects, nestId: 'effects_effects' },
+                    { ...groups.conditions, nestId: 'effects_conditions' }
+                    
                 ]
             },
             {
@@ -34,7 +69,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.combat, nestId: 'utility_combat' },
                     { ...groups.token, nestId: 'utility_token' },
-                    { ...groups.rests, nestId: 'utility_rests' },
                     { ...groups.utility, nestId: 'utility_utility' }
                 ]
             }

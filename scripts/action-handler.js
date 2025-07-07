@@ -17,7 +17,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             // Set actor and token variables
-            //console.log(this)
             
             // Set actor variable
             if (this.actor) {
@@ -101,6 +100,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildAbilities () {
+            // Exit if no items exist
             if (this.items.size === 0) return
                 
                 const actionType = 'item'
@@ -163,7 +163,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Get characteristics
             const characteristics = this.actor.system.characteristics
             
-            // Exit if no abilities exist
+            // Exit if no charactertics exist
             if (characteristics.length === 0) return
                 
                 // Create group data
@@ -193,8 +193,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             if (!game.combats.some(combat => combat.started)) return
                 const actionType = 'utility'
                 
-                // Set combat types
-                const combatTypes = [
+                // Set combat button types
+                const combatButtonTypes = [
                                      { id: 'endTurn', name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.EndTurn') }
                                      ]
                 
@@ -203,12 +203,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             
             // Get actions
             let actions = []
-            for (const combatType of combatTypes) {
+            for (const combatButtonType of combatButtonTypes) {
                 actions.push({
-                    id: combatType.id,
-                    name: combatType.name,
-                    listName: this.#getListName(actionType, combatType.id),
-                    system: { actionType, actionId: combatType.id }
+                    id: combatButtonType.id,
+                    name: combatButtonType.name,
+                    listName: this.#getListName(actionType, combatButtonType.id),
+                    system: { actionType, actionId: combatButtonType.id }
                 })
             }
             // TAH Core method to add actions to the action list

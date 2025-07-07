@@ -1,35 +1,40 @@
 ![Downloads](https://img.shields.io/github/downloads/Larkinabout/fvtt-token-action-hud-template/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge) [![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Ftoken-action-hud-template&colorB=448d34&style=for-the-badge)](https://forge-vtt.com/bazaar#package=token-action-hud-template)
 
-# Token Action HUD Template
+![Foundry v13](https://img.shields.io/badge/foundry-v13-green)
+
+# Token Action HUD Draw steel
 
 Token Action HUD is a repositionable HUD of actions for a selected token.
 
-![Token Action HUD](.github/readme/token-action-hud.gif)
+![Token Action HUD Draw Steel](.github/readme/token-action-hud-draw-steel.gif)
 
 # Features
 - Make rolls directly from the HUD instead of opening your character sheet.
-- Use items from the HUD or right-click an item to open its sheet.
+- Use abilities or make tests from the HUD or right-click an item to open its sheet.
+- Spend recoveries, Hero Tokens and Take Respite even for multiple characters at once.
+- Manage Effects and Conditions for single and multiple actors.
+- Use abilities for multiple NPCs with the same name. 
 - Move the HUD and choose to expand the menus up or down.
 - Unlock the HUD to customise layout and groups per user, and actions per actor.
 - Add your own macros, journal entries and roll table compendiums.
 
 # Installation
 
-## Method 1
+## Method 1 (not working yet)
 1. On Foundry VTT's **Configuration and Setup** screen, go to **Add-on Modules**
 2. Click **Install Module**
-3. Search for **Token Action HUD Pathfinder 2** 
+3. Search for **Token Action HUD Draw Steel** 
 4. Click **Install** next to the module listing
 
 ## Method 2
 1. On Foundry VTT's **Configuration and Setup** screen, go to **Add-on Modules**
 2. Click **Install Module**
-3. In the Manifest URL field, paste: `https://github.com/Larkinabout/fvtt-token-action-hud-template/releases/latest/download/module.json`
+3. In the Manifest URL field, paste: `https://github.com/Dragodoth/token-action-hud-draw-steel/releases/latest/download/module.json`
 4. Click **Install** next to the pasted Manifest URL
 
 ## Required Modules
 
-**IMPORTANT** - Token Action HUD Template requires the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) module to be installed.
+**IMPORTANT** - Token Action HUD Draw Steel requires the [Token Action HUD Core](https://foundryvtt.com/packages/token-action-hud-core) module to be installed.
 
 ## Recommended Modules
 Token Action HUD uses the [Color Picker](https://foundryvtt.com/packages/color-picker) library module for its color picker settings.
@@ -38,14 +43,18 @@ Token Action HUD uses the [Color Picker](https://foundryvtt.com/packages/color-p
 
 For a guide on using Token Action HUD, go to: [How to Use Token Action HUD](https://github.com/Larkinabout/fvtt-token-action-hud-core/wiki/How-to-Use-Token-Action-HUD)
 
-For questions, feature requests or bug reports, please open an issue [here](https://github.com/Larkinabout/fvtt-token-action-hud-core/issues).
+For questions, feature requests or bug reports, please open an issue [here](https://github.com/Dragodoth/token-action-hud-draw-steel/issues).
 
 Pull requests are welcome. Please include a reason for the request or create an issue before starting one.
 
 # Acknowledgements
 
-Thank you to the Community Helpers on Foundry's Discord who provide tireless support for people seeking help with the HUD.
+Thank you to the Community Helpers on Foundry's Discord who provide tireless support for people seeking help with the HUD. Also a big thank you to the developers of Draw Steel Foundry system for their amazing work.
 
 # License
 
+> The Draw Steel System for Foundry Virtual Tabletop is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC. DRAW STEEL © 2024 MCDM Productions, LLC.
+
 This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) and this work is licensed under [Foundry Virtual Tabletop EULA - Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+
+

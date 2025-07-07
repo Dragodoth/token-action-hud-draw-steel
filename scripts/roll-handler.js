@@ -83,7 +83,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     actor.system.takeRespite()
                     break
                 case 'item':
-                    if (this.isRenderItem()) this.renderItem(actor, actionId);
+                    if (this.isRenderItem()) {
+                        this.renderItem(actor, actionId);
+                        break
+                    }
                     const item = actor.items.get(actionId)
                     if (item?.type !== "ability") {
                         console.error("This is not an ability!", item);

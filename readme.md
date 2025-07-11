@@ -2,7 +2,7 @@
 
 ![Foundry v13](https://img.shields.io/badge/foundry-v13-green)
 
-# Token Action HUD Draw steel
+# Token Action HUD Draw Steel
 
 Token Action HUD is a repositionable HUD of actions for a selected token.
 
@@ -53,7 +53,7 @@ Thank you to the Community Helpers on Foundry's Discord who provide tireless sup
 
 # License
 
-> The Draw Steel System for Foundry Virtual Tabletop is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC. DRAW STEEL © 2024 MCDM Productions, LLC.
+The Draw Steel System for Foundry Virtual Tabletop is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC. DRAW STEEL © 2024 MCDM Productions, LLC.
 
 This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) and this work is licensed under [Foundry Virtual Tabletop EULA - Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 

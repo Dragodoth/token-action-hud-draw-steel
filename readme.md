@@ -1,4 +1,4 @@
-![Downloads](https://img.shields.io/github/downloads/Larkinabout/fvtt-token-action-hud-template/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge) [![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Ftoken-action-hud-template&colorB=448d34&style=for-the-badge)](https://forge-vtt.com/bazaar#package=token-action-hud-template)
+![Downloads](https://img.shields.io/github/downloads/Dragodoth/token-action-hud-draw-steel/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge)
 
 ![Foundry v13](https://img.shields.io/badge/foundry-v13-green)
 
@@ -20,7 +20,7 @@ Token Action HUD is a repositionable HUD of actions for a selected token.
 
 # Installation
 
-## Method 1 (not working yet)
+## Method 1
 1. On Foundry VTT's **Configuration and Setup** screen, go to **Add-on Modules**
 2. Click **Install Module**
 3. Search for **Token Action HUD Draw Steel** 

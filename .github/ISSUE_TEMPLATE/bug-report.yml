@@ -32,7 +32,7 @@ body:
     attributes:
       label: Bug Checklist
       options:
-        - label: The issue occurs while all Modules are disabled
+        - label: The issue occurs while all other Modules are disabled
         - label: I am using The Forge for hosting
     validations:
       required: true

@@ -23,9 +23,9 @@ export const REQUIRED_CORE_MODULE_VERSION = '2.0.16'
 export const ACTION_TYPE = {
     item: 'tokenActionHud.draw_steel.Item',
     characteristic: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label',
-    conditions: 'DRAW_STEEL.Effect.StatusConditions',
+    conditions: 'DRAW_STEEL.ActiveEffect.StatusConditions',
     heroTokens: 'DRAW_STEEL.Setting.HeroTokens.Label',
-    recoveries: 'DRAW_STEEL.Actor.Character.FIELDS.hero.recoveries.label',
+    recoveries: 'DRAW_STEEL.Actor.base.FIELDS.recoveries.label',
     utility: 'tokenActionHud.utility'
 }
 
@@ -33,23 +33,23 @@ export const ACTION_TYPE = {
  * Groups
  */
 export const GROUP = {
-    action: { id: 'action', name: 'DRAW_STEEL.Item.Ability.Type.Action', type: 'system' },
-    maneuver: { id: 'maneuver', name: 'DRAW_STEEL.Item.Ability.Type.Maneuver', type: 'system' },
-    freeManeuver: { id: 'free-maneuver', name: 'DRAW_STEEL.Item.Ability.Type.FreeManeuver', type: 'system' },
-    triggered: { id: 'triggered', name: 'DRAW_STEEL.Item.Ability.Type.Triggered', type: 'system' },
-    freeTriggered: { id: 'free-triggered', name: 'DRAW_STEEL.Item.Ability.Type.FreeTriggered', type: 'system' },
+    main: { id: 'main', name: 'DRAW_STEEL.Item.ability.Type.Main', type: 'system' },
+    maneuver: { id: 'maneuver', name: 'DRAW_STEEL.Item.ability.Type.Maneuver', type: 'system' },
+    freeManeuver: { id: 'free-maneuver', name: 'DRAW_STEEL.Item.ability.Type.FreeManeuver', type: 'system' },
+    triggered: { id: 'triggered', name: 'DRAW_STEEL.Item.ability.Type.Triggered', type: 'system' },
+    freeTriggered: { id: 'free-triggered', name: 'DRAW_STEEL.Item.ability.Type.FreeTriggered', type: 'system' },
     
-    signature: { id: 'signature', name: 'DRAW_STEEL.Item.Ability.Category.Signature', type: 'system' },
-    heroic: { id: 'heroic', name: 'DRAW_STEEL.Item.Ability.Category.Heroic', type: 'system' },
+    signature: { id: 'signature', name: 'DRAW_STEEL.Item.ability.Category.Signature', type: 'system' },
+    heroic: { id: 'heroic', name: 'DRAW_STEEL.Item.ability.Category.Heroic', type: 'system' },
     other: { id: 'other', name: 'tokenActionHud.others', type: 'system' },
     
-    effects: { id: 'effects', name: 'tokenActionHud.draw_steel.Effects', type: 'system' },
-    conditions: { id: 'conditions', name: 'DRAW_STEEL.Effect.StatusConditions', type: 'system' },
+    effects: { id: 'effects', name: 'DRAW_STEEL.Actor.Tabs.effects', type: 'system' },
+    conditions: { id: 'conditions', name: 'DRAW_STEEL.ActiveEffect.StatusConditions', type: 'system' },
     
-    freeStrike: { id: 'free-strike', name: 'DRAW_STEEL.Item.Ability.Category.FreeStrike', type: 'system' },
+    freeStrike: { id: 'free-strike', name: 'DRAW_STEEL.Item.ability.Category.FreeStrike', type: 'system' },
     characteristic: { id: 'characteristic', name: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label', type: 'system' },
-    recoveries: { id: 'recoveries', name: 'DRAW_STEEL.Actor.Character.FIELDS.hero.recoveries.label', type: 'system' },
-    respite: { id: 'respite', name: 'tokenActionHud.draw_steel.Respite', type: 'system' },
+    recoveries: { id: 'recoveries', name: 'DRAW_STEEL.Actor.base.FIELDS.recoveries.label', type: 'system' },
+    respite: { id: 'respite', name: 'DRAW_STEEL.ActiveEffect.Ends.Respite.Abbr', type: 'system' },
     heroTokens: { id: 'hero-tokens', name: 'DRAW_STEEL.Setting.HeroTokens.Label', type: 'system' },
     
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
@@ -76,7 +76,7 @@ export const ITEM_TYPE = {
  * Ability types
  */
 export const ABILITY_TYPE = {
-    action: { groupId: 'action'},
+    main: { groupId: 'main'},
     maneuver: { groupId: 'maneuver'},
     freeManeuver: { groupId: 'free-maneuver'},
     triggered: { groupId: 'triggered'},

@@ -1,6 +1,7 @@
 {
   "tokenActionHud": {
     "draw_steel": {
+      "Character": "Character",
       "Respite": "Respite",
       "Effects": "Effects",
       "Item": "Item",

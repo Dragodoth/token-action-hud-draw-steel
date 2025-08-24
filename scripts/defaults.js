@@ -15,17 +15,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     DEFAULTS = {
         layout: [
             {
-                nestId: 'action',
-                id: 'action',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Type.Action'),
+                nestId: 'main',
+                id: 'main',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Type.Main'),
                 groups: [
-                    { ...groups.action, nestId: 'action_action' }
+                    { ...groups.main, nestId: 'main_main' }
                 ]
             },
             {
                 nestId: 'maneuver',
                 id: 'maneuver',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Type.Maneuver'),
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Type.Maneuver'),
                 groups: [
                     { ...groups.maneuver, nestId: 'maneuver_maneuver' },
                     { ...groups.freeManeuver, nestId: 'maneuver_free-maneuver' }
@@ -34,7 +34,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'triggered',
                 id: 'triggered',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Type.Triggered'),
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Type.Triggered'),
                 groups: [
                     { ...groups.triggered, nestId: 'triggered_triggered' },
                     { ...groups.freeTriggered, nestId: 'triggered_free-triggered' }
@@ -43,7 +43,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'character',
                 id: 'character',
-                name: coreModule.api.Utils.i18n('TYPES.Actor.character'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.Character'),
                 groups: [
                     { ...groups.freeStrike, nestId: 'character_free-strike' },
                     { ...groups.characteristic, nestId: 'character_characteristic'},
@@ -55,7 +55,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'effects',
                 id: 'effects',
-                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.Effects'),
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.effects'),
                 groups: [
                     { ...groups.effects, nestId: 'effects_effects' },
                     { ...groups.conditions, nestId: 'effects_conditions' }

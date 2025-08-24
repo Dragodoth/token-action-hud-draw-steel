@@ -28,7 +28,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             
             // Check if one or more tokens are selected and distiquish between characters and npcs
             if (this.actor) {
-                if (this.actorType === 'character') {
+                if (this.actorType === 'hero') {
                     await this.#buildCharacterActions()
                 } else if (this.actorType === 'npc') {
                     await this.#buildNpcActions()
@@ -127,6 +127,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 
                 // Get actions
                 const actions = await Promise.all([...typeMap].map(async ([itemId, itemData]) => {
+                    const name = itemData.name
                     const info = this.#getAbilityInfo(itemData)
                     
                     let config = {}
@@ -137,7 +138,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     
                     return {
                         id: itemId,
-                        name: itemData.name,
+                        name,
                         img: coreModule.api.Utils.getImage(itemData),
                         info1: info?.info1,
                         info2: info?.info2,
@@ -314,6 +315,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             
             // Get actions
             const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
+                const name = itemData.name
                 const info = this.#getAbilityInfo(itemData)
                 
                 let config = {}
@@ -324,7 +326,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 
                 return {
                     id: itemId,
-                    name: itemData.name,
+                    name,
                     img: coreModule.api.Utils.getImage(itemData),
                     info1: info?.info1,
                     info2: info?.info2,
@@ -352,7 +354,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Get actions
             const actions = [{
                 id: 'heroTokens',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Sheet.HeroTokenRegainStamina'),
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Setting.HeroTokens.RegainStamina.tooltip'),
                 listName: this.#getListName(actionType, 'heroTokens'),
                 system: { actionType, actionId: 'heroTokens' }
             }]
@@ -374,7 +376,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Get actions
             const actions = [{
                 id: 'recoveries',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Sheet.SpendRecovery'),
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.base.SpendRecovery.tooltip'),
                 listName: this.#getListName(actionType, 'recoveries'),
                 system: { actionType, actionId: 'recoveries' }
             }]
@@ -396,7 +398,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Get actions
             const actions = [{
                 id: 'respite',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Sheet.TakeRespite'),
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.hero.TakeRespite'),
                 listName: this.#getListName(actionType, 'respite'),
                 system: { actionType, actionId: 'respite' }
             }]
@@ -430,7 +432,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         #getCategoryData (data) {
             if (!data?.system || data.system.category === "") return ''
                 const category = data.system.category
-                return coreModule.api.Utils.i18n('DRAW_STEEL.Item.Ability.Category.' + `${category[0].toUpperCase()}` + `${category.slice(1)}`)
+                return coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Category.' + `${category[0].toUpperCase()}` + `${category.slice(1)}`)
                 }
         
         /**
@@ -446,6 +448,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         
         #getListName (actionType, actionName) {
             const prefix = `${game.i18n.localize(ACTION_TYPE[actionType])}: ` ?? '';
+            console.log(`${prefix}${actionName}` ?? "")
             return `${prefix}${actionName}` ?? "";
         }
     }

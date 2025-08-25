@@ -18,10 +18,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             if (!this.actor) {
                 for (const token of this.tokens) {
                     const actor = token.actor;
-                    await this.handleAction(event, actionType, actor, token, actionId);
+                    await this.handleAction(event, actionType, actor, token, actionId)
                 }
             } else {
-                await this.handleAction(event, actionType, this.actor, this.token, actionId);
+                await this.handleAction(event, actionType, this.actor, this.token, actionId)
             }
             
         }
@@ -54,7 +54,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {string} actionId
          */
         async handleAction (event, actionType, actor, token, actionId) {
-            console.log(actionType)
             switch (actionType) {
                 case 'characteristic':
                     actor.rollCharacteristic(actionId)
@@ -67,7 +66,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     if (!effect) return
                         
                         if (this.isRightClick && this.isShift) {
-                            //await effect.delete()
+                            await effect.delete()
                         } else {
                             await effect.update({ disabled: !effect.disabled })
                         }
@@ -88,11 +87,19 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         break
                     }
                     const item = actor.items.get(actionId)
-                    if (item?.type !== "ability") {
-                        console.error("This is not an ability!", item);
-                        return;
+                    if (item?.type === "ability" ) {
+                        await item.system.use({ event })
+                        return
+                    } else if (item?.type === "project") {
+                        if (this.isShift) {
+                            await item.system.spendCareerPoints()
+                        } else {
+                            await item.system.roll({ event })
+                        }
+                        return
                     }
-                    await item.system.use({ event })
+                    
+                    console.error("This is not an ability!", item);
                     break
                 case 'utility':
                     //this.#handleUtilityAction(token, actionId)

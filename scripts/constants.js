@@ -52,6 +52,8 @@ export const GROUP = {
     respite: { id: 'respite', name: 'DRAW_STEEL.ActiveEffect.Ends.Respite.Abbr', type: 'system' },
     heroTokens: { id: 'hero-tokens', name: 'DRAW_STEEL.Setting.HeroTokens.Label', type: 'system' },
     
+    project: { id: 'project', name: 'DRAW_STEEL.Actor.Tabs.projects', type: 'system' },
+    
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
     token: { id: 'token', name: 'tokenActionHud.token', type: 'system' },
     utility: { id: 'utility', name: 'tokenActionHud.utility', type: 'system' }

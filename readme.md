@@ -12,7 +12,9 @@ Token Action HUD is a repositionable HUD of actions for a selected token.
 - Make rolls directly from the HUD instead of opening your character sheet.
 - Use abilities or make tests from the HUD or right-click an item to open its sheet.
 - Spend recoveries, Hero Tokens and Take Respite even for multiple characters at once.
-- Manage Effects and Conditions for single and multiple actors.
+- Roll Project rolls or spend carrer points by shift clicking.
+- Toggle Effects by clicking or delete them by shift right clicking.
+- Manage Conditions for one or multiple actors.
 - Use abilities for multiple NPCs with the same name. 
 - Move the HUD and choose to expand the menus up or down.
 - Unlock the HUD to customise layout and groups per user, and actions per actor.

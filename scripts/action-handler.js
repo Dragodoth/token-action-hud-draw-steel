@@ -54,6 +54,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             this.#buildEffects()
             await this.#buildFreeStrikes()
             this.#buildHeroTokens()
+            await this.#buildProjects()
             this.#buildRecoveries()
             this.#buildRespite()
         }
@@ -364,6 +365,49 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         }
         
         /**
+         * Build projects
+         * @private
+         */
+        async #buildProjects () {
+            if (this.items.size === 0) return
+                
+                const actionType = 'item'
+                const actionsMap = new Map()
+                
+                // Get free strikes
+                for (const [itemId, itemData] of this.items) {
+                    if (itemData.type != 'project') continue
+                        actionsMap.set(itemId, itemData)
+                        }
+            
+            // Create group data
+            const groupData = { id: 'project', type: 'system' }
+            
+            // Get actions
+            const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
+                const name = itemData.name
+            
+                let config = {}
+                const content = await itemData.system.toEmbed(config)
+                const tooltip = {
+                    content: content.outerHTML
+                }
+                
+                return {
+                    id: itemId,
+                    name,
+                    img: coreModule.api.Utils.getImage(itemData),
+                    info1: { text: `${itemData.system.points} / ${itemData.system.goal}` },
+                    listName: this.#getListName(actionType, name),
+                    tooltip,
+                    system: { actionType, actionId: itemId }
+                }
+            }))
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData)
+        }
+        
+        /**
          * Build recoveries
          * @private
          */
@@ -448,7 +492,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         
         #getListName (actionType, actionName) {
             const prefix = `${game.i18n.localize(ACTION_TYPE[actionType])}: ` ?? '';
-            console.log(`${prefix}${actionName}` ?? "")
             return `${prefix}${actionName}` ?? "";
         }
     }

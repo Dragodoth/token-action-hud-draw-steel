@@ -6,6 +6,7 @@
       "Effects": "Effects",
       "Item": "Item",
       "EndTurn": "End Turn",
+      "other": "Other",
       "settings": {
           "displayFeatures": {
               "name": "Display Features",

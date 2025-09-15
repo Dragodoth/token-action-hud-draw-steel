@@ -19,8 +19,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Settings
             this.displayFeatures = Utils.getSetting('displayFeatures')
             
-            // Set actor and token variables
             
+            // Set actor and token variables
+
             // Set actor variable
             if (this.actor) {
                 this.actorType = this.actor?.type

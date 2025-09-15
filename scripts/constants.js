@@ -38,6 +38,7 @@ export const GROUP = {
     freeManeuver: { id: 'free-maneuver', name: 'DRAW_STEEL.Item.ability.Type.FreeManeuver', type: 'system' },
     triggered: { id: 'triggered', name: 'DRAW_STEEL.Item.ability.Type.Triggered', type: 'system' },
     freeTriggered: { id: 'free-triggered', name: 'DRAW_STEEL.Item.ability.Type.FreeTriggered', type: 'system' },
+    villain: { id: 'villain', name: 'DRAW_STEEL.Item.ability.Type.Villain', type: 'system' },
     
     signature: { id: 'signature', name: 'DRAW_STEEL.Item.ability.Category.Signature', type: 'system' },
     heroic: { id: 'heroic', name: 'DRAW_STEEL.Item.ability.Category.Heroic', type: 'system' },
@@ -87,6 +88,7 @@ export const ABILITY_TYPE = {
     freeTriggered: { groupId: 'free-triggered'},
     signature: { groupId: 'signature'},
     heroic: { groupId: 'heroic'},
+    villain: { groupId: 'villain'},
     freeStrike: { groupId: 'free-strike'},
     other: { groupId: 'other'}
 }
@@ -97,6 +99,8 @@ export const ABILITY_TYPE = {
 export const ABILITY_CATEGORIES = {
     signature: { groupId: 'signature'},
     heroic: { groupId: 'heroic'},
+    villain: { groupId: 'villain'},
     freeStrike: { groupId: 'free-strike'}
+    
 }
 

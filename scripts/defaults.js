@@ -41,11 +41,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 ]
             },
             {
-                nestId: 'villain',
-                id: 'villain',
-                name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Type.Villain'),
+                nestId: 'other',
+                id: 'other',
+                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.other'),
                 groups: [
-                    { ...groups.villain, nestId: 'villain_villain' }
+                    { ...groups.villain, nestId: 'other_villain' },
+                    { ...groups.none, nestId: 'other_none' },
                 ]
             },
             {

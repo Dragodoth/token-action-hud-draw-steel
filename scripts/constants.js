@@ -42,7 +42,8 @@ export const GROUP = {
     
     signature: { id: 'signature', name: 'DRAW_STEEL.Item.ability.Category.Signature', type: 'system' },
     heroic: { id: 'heroic', name: 'DRAW_STEEL.Item.ability.Category.Heroic', type: 'system' },
-    other: { id: 'other', name: 'tokenActionHud.others', type: 'system' },
+    none: { id: 'none', name: 'DRAW_STEEL.Item.ability.Type.None', type: 'system' },
+    other: { id: 'other', name: 'tokenActionHud.draw_steel.other', type: 'system' },
     
     effects: { id: 'effects', name: 'DRAW_STEEL.Actor.Tabs.effects', type: 'system' },
     conditions: { id: 'conditions', name: 'DRAW_STEEL.ActiveEffect.StatusConditions', type: 'system' },
@@ -90,7 +91,7 @@ export const ABILITY_TYPE = {
     heroic: { groupId: 'heroic'},
     villain: { groupId: 'villain'},
     freeStrike: { groupId: 'free-strike'},
-    other: { groupId: 'other'}
+    none: { groupId: 'none'}
 }
 
 /**

@@ -41,6 +41,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 ]
             },
             {
+                nestId: 'features',
+                id: 'features',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.features'),
+                groups: [
+                    { ...groups.features, nestId: 'features_features' }
+                ]
+            },
+            {
                 nestId: 'character',
                 id: 'character',
                 name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.Character'),

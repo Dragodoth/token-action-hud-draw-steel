@@ -46,6 +46,8 @@ export const GROUP = {
     effects: { id: 'effects', name: 'DRAW_STEEL.Actor.Tabs.effects', type: 'system' },
     conditions: { id: 'conditions', name: 'DRAW_STEEL.ActiveEffect.StatusConditions', type: 'system' },
     
+    features: { id: 'features', name: 'DRAW_STEEL.Actor.Tabs.features', type: 'system' },
+    
     freeStrike: { id: 'free-strike', name: 'DRAW_STEEL.Item.ability.Category.FreeStrike', type: 'system' },
     characteristic: { id: 'characteristic', name: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label', type: 'system' },
     recoveries: { id: 'recoveries', name: 'DRAW_STEEL.Actor.base.FIELDS.recoveries.label', type: 'system' },

@@ -5,7 +5,13 @@
       "Respite": "Respite",
       "Effects": "Effects",
       "Item": "Item",
-      "EndTurn": "End Turn"
+      "EndTurn": "End Turn",
+      "settings": {
+          "displayFeatures": {
+              "name": "Display Features",
+              "hint": "Choose whether to display Features items on the HUD"
+          }
+      }
     }
   }
 }

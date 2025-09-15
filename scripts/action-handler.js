@@ -16,6 +16,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {array} groupIds
          */
         async buildSystemActions (groupIds) {
+            // Settings
+            this.displayFeatures = Utils.getSetting('displayFeatures')
+            
             // Set actor and token variables
             
             // Set actor variable
@@ -53,6 +56,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             //this.#buildCombat()
             this.#buildEffects()
             await this.#buildFreeStrikes()
+            await this.#buildFeatures()
             this.#buildHeroTokens()
             await this.#buildProjects()
             this.#buildRecoveries()
@@ -69,6 +73,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             this.#buildConditions()
             this.#buildEffects()
             this.#buildFreeStrikes()
+            await this.#buildFeatures()
         }
         
         
@@ -290,6 +295,50 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     system: { actionType, actionId: effectId }
                 }
             })
+            
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData)
+        }
+        
+        /**
+         * Build features
+         * @private
+         */
+        async #buildFeatures () {
+            if (this.items.size === 0) return
+            if (!this.displayFeatures) return
+                
+                const actionType = 'item'
+                const actionsMap = new Map()
+                
+                // Get features
+                for (const [itemId, itemData] of this.items) {
+                    if (itemData.type != 'feature') continue
+                        actionsMap.set(itemId, itemData)
+                        }
+            
+            // Create group data
+            const groupData = { id: 'features', type: 'system' }
+            
+            // Get actions
+            const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
+                const name = itemData.name
+                
+                let config = {}
+                const content = await itemData.system.toEmbed(config)
+                const tooltip = {
+                    content: content.outerHTML
+                }
+                
+                return {
+                    id: itemId,
+                    name,
+                    img: coreModule.api.Utils.getImage(itemData),
+                    listName: this.#getListName(actionType, name),
+                    tooltip,
+                    system: { actionType, actionId: itemId }
+                }
+            }))
             
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)

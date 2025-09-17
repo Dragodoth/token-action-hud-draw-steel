@@ -6,7 +6,7 @@ import { MODULE } from './constants.js'
  * @param {function} coreUpdate Token Action HUD Core update function
  */
 export function register (coreUpdate) {
-    game.settings.register(MODULE.ID, 'displayFeatures', {
+    /*game.settings.register(MODULE.ID, 'displayFeatures', {
         name: game.i18n.localize('tokenActionHud.draw_steel.settings.displayFeatures.name'),
         hint: game.i18n.localize('tokenActionHud.draw_steel.settings.displayFeatures.hint'
         ),
@@ -17,5 +17,5 @@ export function register (coreUpdate) {
         onChange: (value) => {
             coreUpdate(value)
         }
-    })
+    })*/
 }

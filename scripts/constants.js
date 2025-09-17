@@ -56,7 +56,7 @@ export const GROUP = {
     perk: { id: 'perk', name: 'tokenActionHud.draw_steel.perks', type: 'system' },
     project: { id: 'project', name: 'DRAW_STEEL.Actor.Tabs.projects', type: 'system' },
     title: { id: 'title', name: 'tokenActionHud.draw_steel.titles', type: 'system' },
-    treasure: { id: 'treasure', name: 'DRAW_STEEL.Actor.Tabs.features', type: 'system' },
+    treasure: { id: 'treasure', name: 'TYPES.Item.treasure', type: 'system' },
     
     freeStrike: { id: 'free-strike', name: 'DRAW_STEEL.Item.ability.Category.FreeStrike', type: 'system' },
     characteristic: { id: 'characteristic', name: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label', type: 'system' },

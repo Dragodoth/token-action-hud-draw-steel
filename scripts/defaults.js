@@ -54,13 +54,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'features',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.features'),
                 groups: [
-                    { ...groups.features, nestId: 'features_features' }
+                    { ...groups.heroClass, nestId: 'features_heroClass' },
+                    { ...groups.ancestry, nestId: 'features_ancestry' },
+                    { ...groups.background, nestId: 'features_background' },
+                    { ...groups.complication, nestId: 'features_complication' },
+                    { ...groups.feature, nestId: 'features_feature' },
+                    { ...groups.perk, nestId: 'features_perk' },
+                    { ...groups.title, nestId: 'features_title' }
+                ]
+            },
+            {
+                nestId: 'equipment',
+                id: 'equipment',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.equipment'),
+                groups: [
+                    { ...groups.kit, nestId: 'equipment_kit' },
+                    { ...groups.treasure, nestId: 'equipment_treasure' }
                 ]
             },
             {
                 nestId: 'character',
                 id: 'character',
-                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.Character'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.character'),
                 groups: [
                     { ...groups.freeStrike, nestId: 'character_free-strike' },
                     { ...groups.characteristic, nestId: 'character_characteristic'},
@@ -70,11 +85,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 ]
             },
             {
-                nestId: 'project',
-                id: 'project',
+                nestId: 'projects',
+                id: 'projects',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.projects'),
                 groups: [
-                    { ...groups.project, nestId: 'project_project' }
+                    { ...groups.project, nestId: 'projects_project' }
                 ]
             },
             {

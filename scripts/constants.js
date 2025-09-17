@@ -21,7 +21,7 @@ export const REQUIRED_CORE_MODULE_VERSION = '2.0.16'
  * Action types
  */
 export const ACTION_TYPE = {
-    item: 'tokenActionHud.draw_steel.Item',
+    item: 'tokenActionHud.draw_steel.item',
     characteristic: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label',
     conditions: 'DRAW_STEEL.ActiveEffect.StatusConditions',
     heroTokens: 'DRAW_STEEL.Setting.HeroTokens.Label',
@@ -43,20 +43,26 @@ export const GROUP = {
     signature: { id: 'signature', name: 'DRAW_STEEL.Item.ability.Category.Signature', type: 'system' },
     heroic: { id: 'heroic', name: 'DRAW_STEEL.Item.ability.Category.Heroic', type: 'system' },
     none: { id: 'none', name: 'DRAW_STEEL.Item.ability.Type.None', type: 'system' },
-    other: { id: 'other', name: 'tokenActionHud.draw_steel.other', type: 'system' },
     
     effects: { id: 'effects', name: 'DRAW_STEEL.Actor.Tabs.effects', type: 'system' },
     conditions: { id: 'conditions', name: 'DRAW_STEEL.ActiveEffect.StatusConditions', type: 'system' },
     
-    features: { id: 'features', name: 'DRAW_STEEL.Actor.Tabs.features', type: 'system' },
+    ancestry: { id: 'ancestry', name: 'TYPES.Item.ancestry', type: 'system' },
+    background: { id: 'background', name: 'tokenActionHud.draw_steel.background', type: 'system' },
+    heroClass: { id: 'heroClass', name: 'TYPES.Item.class', type: 'system' },
+    complication: { id: 'complication', name: 'TYPES.Item.complication', type: 'system'  },
+    feature: { id: 'feature', name: 'DRAW_STEEL.Actor.Tabs.features', type: 'system' },
+    kit: { id: 'kit', name: 'TYPES.Item.kit', type: 'system' },
+    perk: { id: 'perk', name: 'tokenActionHud.draw_steel.perks', type: 'system' },
+    project: { id: 'project', name: 'DRAW_STEEL.Actor.Tabs.projects', type: 'system' },
+    title: { id: 'title', name: 'tokenActionHud.draw_steel.titles', type: 'system' },
+    treasure: { id: 'treasure', name: 'TYPES.Item.treasure', type: 'system' },
     
     freeStrike: { id: 'free-strike', name: 'DRAW_STEEL.Item.ability.Category.FreeStrike', type: 'system' },
     characteristic: { id: 'characteristic', name: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label', type: 'system' },
     recoveries: { id: 'recoveries', name: 'DRAW_STEEL.Actor.base.FIELDS.recoveries.label', type: 'system' },
     respite: { id: 'respite', name: 'DRAW_STEEL.ActiveEffect.Ends.Respite.Abbr', type: 'system' },
     heroTokens: { id: 'hero-tokens', name: 'DRAW_STEEL.Setting.HeroTokens.Label', type: 'system' },
-    
-    project: { id: 'project', name: 'DRAW_STEEL.Actor.Tabs.projects', type: 'system' },
     
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
     token: { id: 'token', name: 'tokenActionHud.token', type: 'system' },
@@ -69,13 +75,18 @@ export const GROUP = {
 export const ITEM_TYPE = {
     ability: { groupId: 'ability' },
     ancestry: { groupId: 'ancestry' },
-    career: { groupId: 'career' },
+    ancestryTrait: { groupId: 'ancestry' },
+    career: { groupId: 'background' },
+    "class": { groupId: 'heroClass' },
     complication: { groupId: 'complication' },
-    culture: { groupId: 'culture' },
+    culture: { groupId: 'background' },
     feature: { groupId: 'feature' },
-    equipment: { groupId: 'equipment' },
     kit: { groupId: 'kit' },
-    project: { groupId: 'project' }
+    perk: { groupId: 'perk' },
+    project: { groupId: 'project' },
+    title: { groupId: 'title'},
+    treasure: { groupId: 'treasure'}
+    
 }
 
 /**
@@ -104,4 +115,3 @@ export const ABILITY_CATEGORIES = {
     freeStrike: { groupId: 'free-strike'}
     
 }
-

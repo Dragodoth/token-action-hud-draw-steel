@@ -1,12 +1,12 @@
 {
   "tokenActionHud": {
     "draw_steel": {
-      "Character": "Character",
-      "Respite": "Respite",
-      "Effects": "Effects",
-      "Item": "Item",
-      "EndTurn": "End Turn",
+      "background": "Background",
+      "character": "Character",
+      "item": "Item",
       "other": "Other",
+      "perks": "Perks",
+      "titles": "Titles",
       "settings": {
           "displayFeatures": {
               "name": "Display Features",

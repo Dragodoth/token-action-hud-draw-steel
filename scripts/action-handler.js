@@ -17,11 +17,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             // Settings
-            this.displayFeatures = Utils.getSetting('displayFeatures')
+            //this.displayFeatures = Utils.getSetting('displayFeatures')
             
             
             // Set actor and token variables
-
+            
             // Set actor variable
             if (this.actor) {
                 this.actorType = this.actor?.type
@@ -116,7 +116,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 // Get abilities
                 for (const [itemId, itemData] of this.items) {
                     if (itemData.type != 'ability' || itemData.system.category === 'freeStrike') continue
-                       
+                        
                         const type = itemData.system.type
                         
                         const typeMap = actionsMap.get(type) ?? new Map()
@@ -203,8 +203,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 
                 // Set combat button types
                 const combatButtonTypes = [
-                                     { id: 'endTurn', name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.EndTurn') }
-                                     ]
+                                           { id: 'endTurn', name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.EndTurn') }
+                                           ]
                 
                 // Create group data
                 const groupData = { id: 'combat', type: 'system' }
@@ -307,42 +307,52 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildFeatures () {
             if (this.items.size === 0) return
-            if (!this.displayFeatures) return
+            //if (!this.displayFeatures) return
                 
                 const actionType = 'item'
                 const actionsMap = new Map()
                 
                 // Get features
                 for (const [itemId, itemData] of this.items) {
-                    if (itemData.type != 'feature') continue
-                        actionsMap.set(itemId, itemData)
+                    if (itemData.type === 'ability') continue
+                        
+                        const type = itemData.type
+                        
+                        const typeMap = actionsMap.get(type) ?? new Map()
+                        typeMap.set(itemId, itemData)
+                        actionsMap.set(type, typeMap)
                         }
             
-            // Create group data
-            const groupData = { id: 'features', type: 'system' }
-            
-            // Get actions
-            const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
-                const name = itemData.name
+            for (const [type, typeMap] of actionsMap) {
+                const groupId = ITEM_TYPE[type]?.groupId
                 
-                let config = {}
-                const content = await itemData.system.toEmbed(config)
-                const tooltip = {
-                    content: content.outerHTML
-                }
+                // Create group data
+                if (!groupId) continue
+                    const groupData = { id: groupId, type: 'system' }
                 
-                return {
-                    id: itemId,
-                    name,
-                    img: coreModule.api.Utils.getImage(itemData),
-                    listName: this.#getListName(actionType, name),
-                    tooltip,
-                    system: { actionType, actionId: itemId }
-                }
-            }))
+                // Get actions
+                const actions = await Promise.all([...typeMap].map(async ([itemId, itemData]) => {
+                    const name = itemData.name
+                    
+                    let config = {}
+                    const content = await itemData.system.toEmbed(config)
+                    const tooltip = {
+                        content: content.outerHTML
+                    }
+                    
+                    return {
+                        id: itemId,
+                        name,
+                        img: coreModule.api.Utils.getImage(itemData),
+                        listName: this.#getListName(actionType, name),
+                        tooltip,
+                        system: { actionType, actionId: itemId }
+                    }
+                }))
+                // TAH Core method to add actions to the action list
+                this.addActions(actions, groupData)
+            }
             
-            // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
         }
         
         /**
@@ -436,7 +446,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Get actions
             const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
                 const name = itemData.name
-            
+                
                 let config = {}
                 const content = await itemData.system.toEmbed(config)
                 const tooltip = {

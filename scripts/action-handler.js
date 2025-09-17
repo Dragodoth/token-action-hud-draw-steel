@@ -17,7 +17,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             // Settings
-            this.displayFeatures = Utils.getSetting('displayFeatures')
+            //this.displayFeatures = Utils.getSetting('displayFeatures')
             
             
             // Set actor and token variables

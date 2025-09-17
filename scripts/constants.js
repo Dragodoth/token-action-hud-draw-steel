@@ -21,7 +21,7 @@ export const REQUIRED_CORE_MODULE_VERSION = '2.0.16'
  * Action types
  */
 export const ACTION_TYPE = {
-    item: 'tokenActionHud.draw_steel.Item',
+    item: 'tokenActionHud.draw_steel.item',
     characteristic: 'DRAW_STEEL.Actor.base.FIELDS.characteristics.label',
     conditions: 'DRAW_STEEL.ActiveEffect.StatusConditions',
     heroTokens: 'DRAW_STEEL.Setting.HeroTokens.Label',
@@ -48,12 +48,14 @@ export const GROUP = {
     conditions: { id: 'conditions', name: 'DRAW_STEEL.ActiveEffect.StatusConditions', type: 'system' },
     
     ancestry: { id: 'ancestry', name: 'TYPES.Item.ancestry', type: 'system' },
-    background: { id: 'background', name: 'tokenActionHud.draw_steel.Background', type: 'system' },
+    background: { id: 'background', name: 'tokenActionHud.draw_steel.background', type: 'system' },
     heroClass: { id: 'heroClass', name: 'TYPES.Item.class', type: 'system' },
     complication: { id: 'complication', name: 'TYPES.Item.complication', type: 'system'  },
     feature: { id: 'feature', name: 'DRAW_STEEL.Actor.Tabs.features', type: 'system' },
     kit: { id: 'kit', name: 'TYPES.Item.kit', type: 'system' },
+    perk: { id: 'perk', name: 'tokenActionHud.draw_steel.perks', type: 'system' },
     project: { id: 'project', name: 'DRAW_STEEL.Actor.Tabs.projects', type: 'system' },
+    title: { id: 'title', name: 'tokenActionHud.draw_steel.titles', type: 'system' },
     treasure: { id: 'treasure', name: 'DRAW_STEEL.Actor.Tabs.features', type: 'system' },
     
     freeStrike: { id: 'free-strike', name: 'DRAW_STEEL.Item.ability.Category.FreeStrike', type: 'system' },
@@ -80,8 +82,11 @@ export const ITEM_TYPE = {
     culture: { groupId: 'background' },
     feature: { groupId: 'feature' },
     kit: { groupId: 'kit' },
+    perk: { groupId: 'perk' },
     project: { groupId: 'project' },
+    title: { groupId: 'title'},
     treasure: { groupId: 'treasure'}
+    
 }
 
 /**
@@ -110,4 +115,3 @@ export const ABILITY_CATEGORIES = {
     freeStrike: { groupId: 'free-strike'}
     
 }
-

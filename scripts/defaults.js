@@ -59,13 +59,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.background, nestId: 'features_background' },
                     { ...groups.complication, nestId: 'features_complication' },
                     { ...groups.feature, nestId: 'features_feature' },
+                    { ...groups.perk, nestId: 'features_perk' },
+                    { ...groups.title, nestId: 'features_title' }
                          
                 ]
             },
             {
                 nestId: 'character',
                 id: 'character',
-                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.Character'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.character'),
                 groups: [
                     { ...groups.freeStrike, nestId: 'character_free-strike' },
                     { ...groups.characteristic, nestId: 'character_characteristic'},

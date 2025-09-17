@@ -54,7 +54,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'features',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.features'),
                 groups: [
-                    { ...groups.features, nestId: 'features_features' }
+                    { ...groups.heroClass, nestId: 'features_heroClass' },
+                    { ...groups.ancestry, nestId: 'features_ancestry' },
+                    { ...groups.background, nestId: 'features_background' },
+                    { ...groups.complication, nestId: 'features_complication' },
+                    { ...groups.feature, nestId: 'features_feature' },
+                         
                 ]
             },
             {
@@ -70,11 +75,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 ]
             },
             {
-                nestId: 'project',
-                id: 'project',
+                nestId: 'projects',
+                id: 'projects',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.Tabs.projects'),
                 groups: [
-                    { ...groups.project, nestId: 'project_project' }
+                    { ...groups.project, nestId: 'projects_project' }
                 ]
             },
             {

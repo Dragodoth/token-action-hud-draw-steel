@@ -3,6 +3,7 @@
     "draw_steel": {
       "Character": "Character",
       "Respite": "Respite",
+      "Background": "Background",
       "Effects": "Effects",
       "Item": "Item",
       "EndTurn": "End Turn",

@@ -8,9 +8,9 @@
       "perks": "Perks",
       "titles": "Titles",
       "settings": {
-          "displayFeatures": {
-              "name": "Display Features",
-              "hint": "Choose whether to display Features items on the HUD"
+          "hideUnavailible": {
+              "name": "Hide Unavailible Heroic Abilities",
+              "hint": "Choose whether to hide heroic abilities on the HUD when not having enough heroic resource to use them"
           }
       }
     }

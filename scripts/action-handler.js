@@ -17,8 +17,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             // Settings
-            //this.displayFeatures = Utils.getSetting('displayFeatures')
-            
+            this.hideUnavailible = Utils.getSetting('hideUnavailible')
+
             
             // Set actor and token variables
             
@@ -54,7 +54,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             await this.#buildAbilities()
             this.#buildCharacteristics()
             this.#buildConditions()
-            //this.#buildCombat()
             this.#buildEffects()
             await this.#buildFreeStrikes()
             await this.#buildFeatures()
@@ -117,8 +116,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 for (const [itemId, itemData] of this.items) {
                     if (itemData.type != 'ability' || itemData.system.category === 'freeStrike') continue
                         
-                        const type = itemData.system.type
+                        // Hide unavailable heroic abilities
+                        if (this.hideUnavailible && itemData.system.resource > this.actor.system.hero.primary.value) continue
                         
+                        const type = itemData.system.type
                         const typeMap = actionsMap.get(type) ?? new Map()
                         typeMap.set(itemId, itemData)
                         actionsMap.set(type, typeMap)
@@ -189,36 +190,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 }
             })
             
-            // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
-        }
-        
-        /**
-         * Build combat
-         * @private
-         */
-        #buildCombat () {
-            if (!game.combats.some(combat => combat.started)) return
-                const actionType = 'utility'
-                
-                // Set combat button types
-                const combatButtonTypes = [
-                                           { id: 'endTurn', name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.EndTurn') }
-                                           ]
-                
-                // Create group data
-                const groupData = { id: 'combat', type: 'system' }
-            
-            // Get actions
-            let actions = []
-            for (const combatButtonType of combatButtonTypes) {
-                actions.push({
-                    id: combatButtonType.id,
-                    name: combatButtonType.name,
-                    listName: this.#getListName(actionType, combatButtonType.id),
-                    system: { actionType, actionId: combatButtonType.id }
-                })
-            }
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)
         }
@@ -307,7 +278,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildFeatures () {
             if (this.items.size === 0) return
-            //if (!this.displayFeatures) return
+            //if () return
                 
                 const actionType = 'item'
                 const actionsMap = new Map()

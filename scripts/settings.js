@@ -6,9 +6,9 @@ import { MODULE } from './constants.js'
  * @param {function} coreUpdate Token Action HUD Core update function
  */
 export function register (coreUpdate) {
-    /*game.settings.register(MODULE.ID, 'displayFeatures', {
-        name: game.i18n.localize('tokenActionHud.draw_steel.settings.displayFeatures.name'),
-        hint: game.i18n.localize('tokenActionHud.draw_steel.settings.displayFeatures.hint'
+    game.settings.register(MODULE.ID, 'hideUnavailible', {
+        name: game.i18n.localize('tokenActionHud.draw_steel.settings.hideUnavailible.name'),
+        hint: game.i18n.localize('tokenActionHud.draw_steel.settings.hideUnavailible.hint'
         ),
         scope: 'client',
         config: true,
@@ -17,5 +17,5 @@ export function register (coreUpdate) {
         onChange: (value) => {
             coreUpdate(value)
         }
-    })*/
+    })
 }

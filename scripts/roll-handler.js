@@ -73,13 +73,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     Hooks.callAll('forceUpdateTokenActionHud')
                     break
                 case 'heroTokens':
-                    actor.system.spendStaminaHeroToken()
+                    await actor.system.spendStaminaHeroToken()
                     break
                 case 'recoveries':
-                    actor.system.spendRecovery()
+                    await actor.system.spendRecovery()
                     break
                 case 'respite':
-                    actor.system.takeRespite()
+                    await actor.system.takeRespite()
                     break
                 case 'item':
                     if (this.isRenderItem()) {

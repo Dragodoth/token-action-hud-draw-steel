@@ -73,7 +73,92 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     Hooks.callAll('forceUpdateTokenActionHud')
                     break
                 case 'heroTokens':
-                    await actor.system.spendStaminaHeroToken()
+                    if (actionId === 'heroTokensRecovery')
+                        await actor.system.spendStaminaHeroToken()
+                        if (actionId === 'heroTokensSurges'){
+                            /** Code from #gainSurges found in draw-steel/src/module/applications/sheets
+                             /hero-sheet.mjs */
+
+                            const heroTokens = game.actors.heroTokens;
+                            
+                            const spend = await ds.applications.api.DSDialog.confirm({
+                                window: {
+                                    title: "DRAW_STEEL.Setting.HeroTokens.GainSurges.label",
+                                    icon: "fa-solid fa-bolt-lightning",
+                                },
+                                content: `<p>${game.i18n.format("DRAW_STEEL.Setting.HeroTokens.GainSurges.dialogContent", {
+                                value: heroTokens.value,
+                              })}</p>`,
+                                rejectClose: false,
+                            });
+                            
+                            if (spend) {
+                                const valid = await heroTokens.spendToken("gainSurges", { flavor: this.actor.name });
+                                if (valid !== false) {
+                                    this.actor.update({ "system.hero.surges": this.actor.system.hero.surges + 2 });
+                                }
+                            }
+                        }
+                    
+                    break
+                case 'npcFreeStrike':
+                    /** Code from #freeStrike found in draw-steel/src/module/applications/sheets
+                     /npc.mjs */
+                    
+                    try { game.user.targets.map(t => t.actor); } catch (e) {
+                        ui.notifications.error("DRAW_STEEL.Actor.npc.FreeStrike.MultiLinked", { localize: true });
+                        throw (e);
+                    }
+                    
+                    /** @type {Array<DrawSteelActor>} */
+                    const targets = game.user.targets.map(t => t.actor).filter(a => a?.system?.takeDamage).toObject();
+                    if (!targets.length) {
+                        ui.notifications.error("DRAW_STEEL.Actor.npc.FreeStrike.NoTargets", { localize: true });
+                        return;
+                    }
+                    const freeStrike = this.actor.system.freeStrike;
+                    
+                    const damageLabel = game.i18n.format("DRAW_STEEL.Actor.npc.FreeStrike.DialogHeader", {
+                        value: freeStrike.value,
+                        type: ds.CONFIG.damageTypes[freeStrike.type]?.label ?? "",
+                    });
+                    const keywordFormatter = game.i18n.getListFormatter({ type: "unit" });
+                    const keywordList = freeStrike.keywords.toObject().map(k => ds.CONFIG.abilities.keywords[k]?.label);
+                    
+                    let content = `<span>${keywordFormatter.format([damageLabel, ...keywordList])}</span>`;
+                    
+                    content += targets.map(a => {
+                        const checkboxInput = foundry.applications.fields.createCheckboxInput({ name: a.uuid, value: true });
+                        const formGroup = foundry.applications.fields.createFormGroup({
+                            label: a.name,
+                            input: checkboxInput,
+                            classes: ["inline"],
+                        });
+                        // style fix
+                        const label = formGroup.querySelector("label");
+                        label.classList.add("checkbox");
+                        label.style = "font-size: inherit;";
+                        return formGroup.outerHTML;
+                    }).join("");
+                    
+                    /** @type {object} */
+                    const fd = await ds.applications.api.DSDialog.input({
+                        window: { title: "DRAW_STEEL.Actor.npc.FreeStrike.DialogTitle", icon: "fa-solid fa-burst" },
+                        content,
+                        ok: {
+                            label: "DRAW_STEEL.Actor.npc.FreeStrike.DialogButton",
+                        },
+                    });
+                    
+                    if (fd) {
+                        for (const [uuid, bool] of Object.entries(fd)) {
+                            if (bool) {
+                                /** @type {DrawSteelActor} */
+                                const actor = fromUuidSync(uuid);
+                                actor.system.takeDamage(freeStrike.value, { type: freeStrike.type });
+                            }
+                        }
+                    }
                     break
                 case 'recoveries':
                     await actor.system.spendRecovery()

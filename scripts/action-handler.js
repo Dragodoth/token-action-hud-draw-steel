@@ -18,7 +18,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         async buildSystemActions (groupIds) {
             // Settings
             this.hideUnavailible = Utils.getSetting('hideUnavailible')
-
+            
             
             // Set actor and token variables
             
@@ -74,6 +74,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             this.#buildEffects()
             this.#buildFreeStrikes()
             await this.#buildFeatures()
+            this.#buildNPCFreeStrikes()
         }
         
         
@@ -118,12 +119,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         
                         // Hide unavailable heroic abilities
                         if (this.hideUnavailible && itemData.system.resource > this.actor.system.hero.primary.value) continue
-                        
-                        const type = itemData.system.type
-                        const typeMap = actionsMap.get(type) ?? new Map()
-                        typeMap.set(itemId, itemData)
-                        actionsMap.set(type, typeMap)
-                        }
+                            
+                            const type = itemData.system.type
+                            const typeMap = actionsMap.get(type) ?? new Map()
+                            typeMap.set(itemId, itemData)
+                            actionsMap.set(type, typeMap)
+                            }
             
             
             for (const [type, typeMap] of actionsMap) {
@@ -183,7 +184,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 const id = `${characteristicName}`
                 return {
                     id,
-                    name: coreModule.api.Utils.capitalize(characteristicName),
+                    name: this.#getCharacteristicName(characteristicName),
                     info1: { text: coreModule.api.Utils.getModifier(characteristicMod.value) } ?? null,
                     listName: this.#getListName(actionType, id),
                     system: { actionType, actionId: id }
@@ -213,19 +214,23 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             
             // Get actions
             const actions = conditions.map((condition) => {
-                const active = this.actors.every((actor) => {
-                    return actor.effects.some(effect => effect.statuses.some(status => status === condition.id) && !effect?.disabled)
-                })
-                ? ' active'
-                : ''
+                
+                const effect = this.actor?.effects.find(effect => effect.statuses?.has(condition.id) && !effect.disabled)
+                const active = effect ? ' active' : ''
+                const duration = effect?.duration.label ?? ''
+                
+                const i18nKey = `DRAW_STEEL.Effect.Conditions[${condition.name}]`;
+                const name = coreModule.api.Utils.i18n(i18nKey) === i18nKey ? condition.name : coreModule.api.Utils.i18n(i18nKey);
+                
                 return {
                     id: condition.id,
-                    name: coreModule.api.Utils.i18n(`DRAW_STEEL.Effect.Conditions[${condition.name}].name`) === `DRAW_STEEL.Effect.Conditions[${condition.name}]` ? coreModule.api.Utils.i18n(`DRAW_STEEL.Effect.Conditions[${condition.name}].name`) : condition.name,
+                    name,
+                    info1: { text: duration },
                     img: coreModule.api.Utils.getImage(condition),
                     cssClass: `toggle${active}`,
                     listName: this.#getListName(actionType, condition.id),
                     system: { actionType, actionId: condition.id }
-                }
+                };
             })
             
             // TAH Core method to add actions to the action list
@@ -254,7 +259,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 const groupData = { id: 'effects', type: 'system' }
             
             const actions = [...effects].map(([effectId,effectData]) => {
-                const active = this.actors.every((actor) => actor.effects.some(effect => effect.id === effectId && !effect?.disabled))
+                const active = this.actor.effects.some(effect => effect.id === effectId && !effect?.disabled)
                 ? ' active'
                 : ''
                 return {
@@ -278,7 +283,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildFeatures () {
             if (this.items.size === 0) return
-            //if () return
+                //if () return
                 
                 const actionType = 'item'
                 const actionsMap = new Map()
@@ -316,6 +321,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         name,
                         img: coreModule.api.Utils.getImage(itemData),
                         listName: this.#getListName(actionType, name),
+                        info1: type === "class" ? { text: coreModule.api.Utils.i18n('DRAW_STEEL.Item.class.FIELDS.level.label')} : null,
+                        info2: type === "class" ? { text: `${itemData.system.level}`} : null,
                         tooltip,
                         system: { actionType, actionId: itemId }
                     }
@@ -371,7 +378,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)
         }
-        
+                
         /**
          * Build hero token actions
          * @private
@@ -385,15 +392,53 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             
             // Get actions
             const actions = [{
-                id: 'heroTokens',
+                id: 'heroTokensRecovery',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Setting.HeroTokens.RegainStamina.tooltip'),
-                listName: this.#getListName(actionType, 'heroTokens'),
-                system: { actionType, actionId: 'heroTokens' }
+                img: "icons/svg/regen.svg",
+                info1: { text: `${game.actors.heroTokens.value} Hero Tokens` },
+                listName: this.#getListName(actionType, 'heroTokensRecovery'),
+                system: { actionType, actionId: 'heroTokensRecovery' }
+            },
+             {
+                 id: 'heroTokensSurges',
+                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Setting.HeroTokens.GainSurges.label'),
+                img: "icons/svg/lightning.svg",
+                 info1: { text: `${this.actor.system.hero.surges} Surges` },
+                info2: { text: `${game.actors.heroTokens.value} Hero Tokens` },
+                 listName: this.#getListName(actionType, 'heroTokensSurges'),
+                 system: { actionType, actionId: 'heroTokensSurges' }
+             }]
+            
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData)
+        }
+        
+        /**
+         * Build NPC free strikes
+         * @private
+         */
+        #buildNPCFreeStrikes () {
+            const actionType = 'npcFreeStrike'
+            
+            // Create group data
+            const groupData = { id: 'free-strike', type: 'system' }
+            
+            // Get actions
+            
+            const name = 'Free Strike'
+            const actions = [{
+                id: 'npcFreeStrike',
+                name,
+                img: "icons/svg/explosion.svg",
+                info1: { text: `${this.actor.system.freeStrike.value}` },
+                listName: this.#getListName(actionType, name),
+                system: { actionType, actionId: 'npcFreeStrike' }
             }]
             
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)
         }
+
         
         /**
          * Build projects
@@ -452,6 +497,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             const actions = [{
                 id: 'recoveries',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.base.SpendRecovery.tooltip'),
+                img: "icons/svg/heal.svg",
+                info1: { text: `${this.actor.system.recoveries.value} / ${this.actor.system.recoveries.max}` },
                 listName: this.#getListName(actionType, 'recoveries'),
                 system: { actionType, actionId: 'recoveries' }
             }]
@@ -474,6 +521,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             const actions = [{
                 id: 'respite',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Actor.hero.TakeRespite'),
+                img: "icons/svg/house.svg",
                 listName: this.#getListName(actionType, 'respite'),
                 system: { actionType, actionId: 'respite' }
             }]
@@ -521,9 +569,33 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 return (data.system.resource > 0) ? `${data.system.resource ?? '0'}` : ''
                 }
         
+        /**
+         * Get list name
+         * @private
+         * @param {string} actionType
+         * @param {string} actionName
+         * @returns {string}
+         */
         #getListName (actionType, actionName) {
             const prefix = `${game.i18n.localize(ACTION_TYPE[actionType])}: ` ?? '';
             return `${prefix}${actionName}` ?? "";
+        }
+        
+        /**
+         * Get resource cost
+         * @private
+         * @param {string} name
+         * @returns {string}
+         */
+        #getCharacteristicName (name) {
+            const icons = {
+                m: "🅼",
+                a: "🅰",
+                r: "🆁",
+                i: "🅸",
+                p: "🅿"
+            }
+            return icons[name.charAt(0)] + name.substring(1);
         }
     }
     

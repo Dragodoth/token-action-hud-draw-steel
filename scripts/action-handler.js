@@ -118,7 +118,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     if (itemData.type != 'ability' || itemData.system.category === 'freeStrike') continue
                         
                         // Hide unavailable heroic abilities
-                        if (this.hideUnavailible && itemData.system.resource > this.actor.system.hero.primary.value) continue
+                        if (this.hideUnavailible && itemData.system.resource > (this.actorType === 'hero' ? this.actor.system.hero.primary.value: this.actor.system.coreResource.target.value)) continue
                             
                             const type = itemData.system.type
                             const typeMap = actionsMap.get(type) ?? new Map()

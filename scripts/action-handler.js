@@ -16,13 +16,16 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {array} groupIds
          */
         async buildSystemActions (groupIds) {
+            
+            console.log(this)
             // Settings
             this.hideUnavailible = Utils.getSetting('hideUnavailible')
-            
+            this.sameActorName = false
             
             // Set actor and token variables
             
             // Set actor variable
+            this.items = []
             if (this.actor) {
                 this.actorType = this.actor?.type
                 let items = this.actor.items
@@ -97,6 +100,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         async #buildMultipleNpcTokenActions () {
             // If all npcs are the same also show abilities
             if (this.actors.every(actor => actor.name === this.actors[0].name)){
+                this.sameActorName = true
+                let items = this.actors[0].items
+                items = coreModule.api.Utils.sortItemsByName(items)
+                this.items = items
                 await this.#buildAbilities()
             }
             this.#buildConditions()
@@ -115,16 +122,20 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 
                 // Get abilities
                 for (const [itemId, itemData] of this.items) {
-                    if (itemData.type != 'ability' || itemData.system.category === 'freeStrike') continue
+                    if (this.hideUnavailible) {
+                        const actor = this.sameActorName ? this.actors[0] : this.actor;
+                        const resourceValue = this.actorType === 'hero'
+                        ? actor?.system.hero.primary.value
+                        : actor?.system.coreResource.target.value;
                         
-                        // Hide unavailable heroic abilities
-                        if (this.hideUnavailible && itemData.system.resource > (this.actorType === 'hero' ? this.actor.system.hero.primary.value: this.actor.system.coreResource.target.value)) continue
-                            
-                            const type = itemData.system.type
-                            const typeMap = actionsMap.get(type) ?? new Map()
-                            typeMap.set(itemId, itemData)
-                            actionsMap.set(type, typeMap)
-                            }
+                        if (itemData.system.resource > resourceValue) continue;
+                    }
+                    
+                    const type = itemData.system.type
+                    const typeMap = actionsMap.get(type) ?? new Map()
+                    typeMap.set(itemId, itemData)
+                    actionsMap.set(type, typeMap)
+                }
             
             
             for (const [type, typeMap] of actionsMap) {
@@ -378,7 +389,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)
         }
-                
+        
         /**
          * Build hero token actions
          * @private
@@ -399,15 +410,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 listName: this.#getListName(actionType, 'heroTokensRecovery'),
                 system: { actionType, actionId: 'heroTokensRecovery' }
             },
-             {
-                 id: 'heroTokensSurges',
-                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Setting.HeroTokens.GainSurges.label'),
+                             {
+                id: 'heroTokensSurges',
+                name: coreModule.api.Utils.i18n('DRAW_STEEL.Setting.HeroTokens.GainSurges.label'),
                 img: "icons/svg/lightning.svg",
-                 info1: { text: `${this.actor.system.hero.surges} Surges` },
+                info1: { text: `${this.actor.system.hero.surges} Surges` },
                 info2: { text: `${game.actors.heroTokens.value} Hero Tokens` },
-                 listName: this.#getListName(actionType, 'heroTokensSurges'),
-                 system: { actionType, actionId: 'heroTokensSurges' }
-             }]
+                listName: this.#getListName(actionType, 'heroTokensSurges'),
+                system: { actionType, actionId: 'heroTokensSurges' }
+            }]
             
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)
@@ -438,7 +449,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // TAH Core method to add actions to the action list
             this.addActions(actions, groupData)
         }
-
+        
         
         /**
          * Build projects

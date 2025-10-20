@@ -33,7 +33,20 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {object} event        The event
          * @param {string} encodedValue The encoded value
          */
-        async handleActionHover (event, encodedValue) {}
+        async handleActionHover (event, encodedValue) {
+                
+            if (!this.actor || !this.action?.system?.actionId) return;
+            const { actionType, actionId } = this.action.system;
+            if (actionType != 'item') return;
+
+            const item = this.actor.items.get(actionId);
+
+              if (this.isHover) {
+                Hooks.call("tokenActionHudSystemActionHoverOn", event, item);
+              } else {
+                Hooks.call("tokenActionHudSystemActionHoverOff", event, item);
+              }
+        }
         
         /**
          * Handle group click

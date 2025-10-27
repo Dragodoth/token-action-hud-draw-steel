@@ -17,7 +17,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             
-            console.log(this)
             // Settings
             this.hideUnavailible = Utils.getSetting('hideUnavailible')
             this.sameActorName = false

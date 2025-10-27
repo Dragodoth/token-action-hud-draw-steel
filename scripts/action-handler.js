@@ -131,6 +131,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         if (itemData.system.resource > resourceValue) continue;
                     }
                     
+                    if (itemData.system.category === 'freeStrike') continue;
+                    
                     const type = itemData.system.type
                     const typeMap = actionsMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
@@ -576,8 +578,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {string}
          */
         #getResourceData (data) {
-            if (!data?.system || data.system.category != "heroic") return ''
-                return (data.system.resource > 0) ? `${data.system.resource ?? '0'}` : ''
+            if (!data?.system || !data.system?.resource || data.system?.resource === 0) return ''
+                return  `${data.system.resource}`
                 }
         
         /**

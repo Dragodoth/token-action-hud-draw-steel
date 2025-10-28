@@ -19,7 +19,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'main',
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Type.Main'),
                 groups: [
-                    { ...groups.main, nestId: 'main_main' }
+                    { ...groups.main, nestId: 'main_main' },
+                    { ...groups.freeStrike, nestId: 'character_free-strike' }
                 ]
             },
             {
@@ -77,7 +78,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'character',
                 name: coreModule.api.Utils.i18n('tokenActionHud.draw_steel.character'),
                 groups: [
-                    { ...groups.freeStrike, nestId: 'character_free-strike' },
                     { ...groups.characteristic, nestId: 'character_characteristic'},
                     { ...groups.recoveries, nestId: 'character_recoveries' },
                     { ...groups.heroTokens, nestId: 'character_hero-tokens' },

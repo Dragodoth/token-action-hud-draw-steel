@@ -6,8 +6,6 @@
 
 Token Action HUD is a repositionable HUD of actions for a selected token.
 
-![Token Action HUD Draw Steel](.github/readme/token-action-hud-draw-steel.gif)
-
 # Features
 - Make rolls directly from the HUD instead of opening your character sheet.
 - Use abilities or make tests from the HUD or right-click an item to open its sheet.
@@ -52,11 +50,5 @@ Pull requests are welcome. Please include a reason for the request or create an 
 # Acknowledgements
 
 Thank you to the Community Helpers on Foundry's Discord who provide tireless support for people seeking help with the HUD. Also a big thank you to the developers of Draw Steel Foundry system for their amazing work.
-
-# License
-
-The Token Action HUD Draw Steel for Foundry Virtual Tabletop is an independent product published under the DRAW STEEL Creator License and is not affiliated with MCDM Productions, LLC. DRAW STEEL © 2024 MCDM Productions, LLC.
-
-This Foundry VTT module is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) and this work is licensed under [Foundry Virtual Tabletop EULA - Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
 

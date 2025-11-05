@@ -77,7 +77,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * Called by Token Action HUD Core
          * @override
          * @returns {object} The TAH system styles
-         */
+         *
         registerStyles () {
             return {
                 drawSteel: {
@@ -87,6 +87,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     name: 'Draw Steel Style' // The name to display in the Token Action HUD Core 'Style' module setting
                 }
             }
-        }
+        }*/
     }
 })

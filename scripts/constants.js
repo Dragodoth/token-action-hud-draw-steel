@@ -65,7 +65,6 @@ export const GROUP = {
     heroTokens: { id: 'hero-tokens', name: 'DRAW_STEEL.Setting.HeroTokens.Label', type: 'system' },
     
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
-    token: { id: 'token', name: 'tokenActionHud.token', type: 'system' },
     utility: { id: 'utility', name: 'tokenActionHud.utility', type: 'system' }
 }
 

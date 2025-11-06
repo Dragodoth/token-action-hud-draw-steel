@@ -20,7 +20,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Type.Main'),
                 groups: [
                     { ...groups.main, nestId: 'main_main' },
-                    { ...groups.freeStrike, nestId: 'character_free-strike' }
+                    { ...groups.freeStrike, nestId: 'main_free-strike' }
                 ]
             },
             {
@@ -107,7 +107,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n('tokenActionHud.utility'),
                 groups: [
                     { ...groups.combat, nestId: 'utility_combat' },
-                    { ...groups.token, nestId: 'utility_token' },
                     { ...groups.utility, nestId: 'utility_utility' }
                 ]
             }

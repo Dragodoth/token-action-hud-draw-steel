@@ -1,8 +1,8 @@
 // System Module Imports
-import { ACTION_TYPE, ITEM_TYPE, ABILITY_TYPE } from './constants.js'
-import { Utils } from './utils.js'
+import { ACTION_TYPE, ITEM_TYPE, ABILITY_TYPE } from './constants.js';
+import { Utils } from './utils.js';
 
-export let ActionHandler = null
+export let ActionHandler = null;
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
@@ -18,51 +18,52 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         async buildSystemActions (groupIds) {
             
             // Settings
-            this.hideUnavailible = Utils.getSetting('hideUnavailible')
-            this.sameActorName = false
+            this.hideUnavailible = Utils.getSetting('hideUnavailible');
+            this.sameActorName = false;
             
             // Set actor and token variables
             
             // Set actor variable
-            this.items = []
+            this.items = [];
             if (this.actor) {
-                this.actorType = this.actor?.type
-                let items = this.actor.items
-                items = coreModule.api.Utils.sortItemsByName(items)
-                this.items = items
+                this.actorType = this.actor?.type;
+                let items = this.actor.items;
+                items = coreModule.api.Utils.sortItemsByName(items);
+                this.items = items;
             }
             
-            // Check if one or more tokens are selected and distiquish between characters and npcs
+            // Check if one or more tokens are selected and distiquish between heros and npcs
             if (this.actor) {
                 if (this.actorType === 'hero') {
-                    await this.#buildCharacterActions()
+                    await this.#buildHeroActions();
                 } else if (this.actorType === 'npc') {
-                    await this.#buildNpcActions()
+                    await this.#buildNpcActions();
                 }
             } else {
                 if (this.actors.some(actor => actor.type === 'npc')){
-                    await this.#buildMultipleNpcTokenActions()
+                    await this.#buildMultipleNpcTokenActions();
                 } else {
-                    this.#buildMultipleCharacterTokenActions()
+                    this.#buildMultipleHeroTokenActions();
                 }
             }
         }
         
         /**
-         * Build character actions
+         * Build hero actions
          * @private
          */
-        async #buildCharacterActions () {
-            await this.#buildAbilities()
-            this.#buildCharacteristics()
-            this.#buildConditions()
-            this.#buildEffects()
-            await this.#buildFreeStrikes()
-            await this.#buildFeatures()
-            this.#buildHeroTokens()
-            await this.#buildProjects()
-            this.#buildRecoveries()
-            this.#buildRespite()
+        async #buildHeroActions () {
+            await this.#buildAbilities();
+            this.#buildCharacteristics();
+            this.#buildConditions();
+            this.#buildCombat();
+            this.#buildEffects();
+            await this.#buildFreeStrikes();
+            await this.#buildFeatures();
+            this.#buildHeroTokens();
+            await this.#buildProjects();
+            this.#buildRecoveries();
+            this.#buildRespite();
         }
         
         /**
@@ -70,25 +71,26 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildNpcActions () {
-            await this.#buildAbilities()
-            this.#buildCharacteristics()
-            this.#buildConditions()
-            this.#buildEffects()
-            this.#buildFreeStrikes()
-            await this.#buildFeatures()
-            this.#buildNPCFreeStrikes()
+            await this.#buildAbilities();
+            this.#buildCharacteristics();
+            this.#buildConditions();
+            this.#buildCombat();
+            this.#buildEffects();
+            this.#buildFreeStrikes();
+            await this.#buildFeatures();
+            this.#buildNPCFreeStrikes();
         }
         
         
         /**
-         * Build multiple character token actions
+         * Build multiple hero token actions
          * @private
          * @returns {object}
          */
-        #buildMultipleCharacterTokenActions () {
-            this.#buildConditions()
-            this.#buildRecoveries()
-            this.#buildRespite()
+        #buildMultipleHeroTokenActions () {
+            this.#buildConditions();
+            this.#buildRecoveries();
+            this.#buildRespite();
         }
         
         /**
@@ -99,13 +101,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         async #buildMultipleNpcTokenActions () {
             // If all npcs are the same also show abilities
             if (this.actors.every(actor => actor.name === this.actors[0].name)){
-                this.sameActorName = true
-                let items = this.actors[0].items
-                items = coreModule.api.Utils.sortItemsByName(items)
-                this.items = items
-                await this.#buildAbilities()
+                this.sameActorName = true;
+                let items = this.actors[0].items;
+                items = coreModule.api.Utils.sortItemsByName(items);
+                this.items = items;
+                await this.#buildAbilities();
             }
-            this.#buildConditions()
+            this.#buildConditions();
         }
         
         /**
@@ -114,48 +116,53 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildAbilities () {
             // Exit if no items exist
-            if (this.items.size === 0) return
-                
-                const actionType = 'item'
-                const actionsMap = new Map()
-                
-                // Get abilities
-                for (const [itemId, itemData] of this.items) {
-                    if (this.hideUnavailible) {
-                        const actor = this.sameActorName ? this.actors[0] : this.actor;
-                        const resourceValue = this.actorType === 'hero'
-                        ? actor?.system.hero.primary.value
-                        : actor?.system.coreResource.target.value;
-                        
-                        if (itemData.system.resource > resourceValue) continue;
-                    }
+            if (this.items.size === 0) return;
+            
+            const actionType = 'item';
+            const actionsMap = new Map();
+            
+            // Get abilities
+            for (const [itemId, itemData] of this.items) {
+                if (this.hideUnavailible) {
+                    const actor = this.sameActorName ? this.actors[0] : this.actor;
+                    const resourceValue = this.actorType === 'hero'
+                    ? actor?.system.hero.primary.value
+                    : actor?.system.coreResource.target.value;
                     
-                    if (itemData.system.category === 'freeStrike') continue;
-                    
-                    const type = itemData.system.type
-                    const typeMap = actionsMap.get(type) ?? new Map()
-                    typeMap.set(itemId, itemData)
-                    actionsMap.set(type, typeMap)
+                    if (itemData.system.resource > resourceValue) continue;
                 }
+                
+                if (itemData.system.category === 'freeStrike') continue;
+                
+                const type = itemData.system.type;
+                const typeMap = actionsMap.get(type) ?? new Map();
+                typeMap.set(itemId, itemData);
+                actionsMap.set(type, typeMap);
+            }
             
             
             for (const [type, typeMap] of actionsMap) {
-                const groupId = ABILITY_TYPE[type]?.groupId
+                const groupId = ABILITY_TYPE[type]?.groupId;
                 
                 // Create group data
-                if (!groupId) continue
-                    const groupData = { id: groupId, type: 'system' }
+                if (!groupId) continue;
+                const groupData = { id: groupId, type: 'system' };
                 
                 // Get actions
                 const actions = await Promise.all([...typeMap].map(async ([itemId, itemData]) => {
-                    const name = itemData.name
-                    const info = this.#getAbilityInfo(itemData)
                     
-                    let config = {}
-                    const content = await itemData.system.toEmbed(config)
+                    const restrictions = (this.actor) ? this.actor.system.restrictions : null;
+                    
+                    const restrictionIcon = (restrictions?.type.has(type) || restrictions?.dsid.has(itemData.dsid)) ? "⚠️ " : "";
+                    
+                    const name = restrictionIcon + itemData.name;
+                    const info = this.#getAbilityInfo(itemData);
+                    
+                    let config = {};
+                    const content = await itemData.system.toEmbed(config);
                     const tooltip = {
                         content: content.outerHTML
-                    }
+                    };
                     
                     return {
                         id: itemId,
@@ -166,11 +173,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         listName: this.#getListName(actionType, name),
                         tooltip,
                         system: { actionType, actionId: itemId }
-                    }
-                }))
+                    };
+                }));
                 
                 // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
+                this.addActions(actions, groupData);
             }
             
         }
@@ -180,31 +187,31 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildCharacteristics () {
-            const actionType = 'characteristic'
+            const actionType = 'characteristic';
             
             // Get characteristics
-            const characteristics = this.actor.system.characteristics
+            const characteristics = this.actor.system.characteristics;
             
             // Exit if no charactertics exist
-            if (characteristics.length === 0) return
-                
-                // Create group data
-                const groupData = { id: 'characteristic', type: 'system' }
+            if (characteristics.length === 0) return;
+            
+            // Create group data
+            const groupData = { id: 'characteristic', type: 'system' };
             
             // Get actions
             const actions = Object.entries(characteristics).map(([characteristicName, characteristicMod]) => {
-                const id = `${characteristicName}`
+                const id = `${characteristicName}`;
                 return {
                     id,
                     name: this.#getCharacteristicName(characteristicName),
                     info1: { text: coreModule.api.Utils.getModifier(characteristicMod.value) } ?? null,
                     listName: this.#getListName(actionType, id),
                     system: { actionType, actionId: id }
-                }
-            })
+                };
+            });
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -212,24 +219,24 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildConditions () {
-            if (this.tokens?.length === 0) return
-                const actionType = 'conditions'
-                
-                // Get conditions
-                const conditions = CONFIG.statusEffects
-                
-                // Exit if no conditions exist
-                if (conditions.length === 0) return
-                    
-                    // Create group data
-                    const groupData = { id: 'conditions', type: 'system' }
+            if (this.tokens?.length === 0) return;
+            const actionType = 'conditions';
+            
+            // Get conditions
+            const conditions = CONFIG.statusEffects;
+            
+            // Exit if no conditions exist
+            if (conditions.length === 0) return;
+            
+            // Create group data
+            const groupData = { id: 'conditions', type: 'system' };
             
             // Get actions
             const actions = conditions.map((condition) => {
                 
-                const effect = this.actor?.effects.find(effect => effect.statuses?.has(condition.id) && !effect.disabled)
-                const active = effect ? ' active' : ''
-                const duration = effect?.duration.label ?? ''
+                const effect = this.actor?.effects.find(effect => effect.statuses?.has(condition.id) && !effect.disabled);
+                const active = effect ? ' active' : '';
+                const duration = effect?.duration.label ?? '';
                 
                 const i18nKey = `DRAW_STEEL.Effect.Conditions[${condition.name}]`;
                 const name = coreModule.api.Utils.i18n(i18nKey) === i18nKey ? condition.name : coreModule.api.Utils.i18n(i18nKey);
@@ -243,10 +250,43 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     listName: this.#getListName(actionType, condition.id),
                     system: { actionType, actionId: condition.id }
                 };
-            })
+            });
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
+        }
+        
+        /**
+         * Build combat
+         * @private
+         */
+        #buildCombat () {
+            if (this.tokens?.length === 0) return;
+            const actionType = 'combat';
+            
+            // Exit if no combat exist
+            if (!game?.combat) return;
+            // Exit if combat didn't start yet
+            if (!game.combat.started) return;
+            // Exit if actor is not one of the combatants
+            if (!game.combat.combatants.some(c => c.actorId === this. actor.id)) return;
+            
+            // Create group data
+            const groupData = { id: 'combat', type: 'system' };
+            
+            const name = "End Turn";
+            const id = "endTurn";
+            // Get actions
+            const actions = [{
+                id,
+                name,
+                img: "icons/svg/door-exit.svg",
+                listName: this.#getListName(actionType, name),
+                system: { actionType, actionId: id }
+            }];
+            
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -254,26 +294,26 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildEffects () {
-            if (this.tokens?.length === 0) return
-                const actionType = 'effects'
-                
-                // Get effects
-                const effects = new Map()
-                for (const effect of this.actor.effects) {
-                    // exclude status effects
-                    if (!effect.statuses.size) effects.set(effect.id, effect)
-                        }
+            if (this.tokens?.length === 0) return;
+            const actionType = 'effects';
+            
+            // Get effects
+            const effects = new Map();
+            for (const effect of this.actor.effects) {
+                // exclude status effects
+                if (!effect.statuses.size) effects.set(effect.id, effect);
+            }
             
             // Exit if no effects exist
-            if (effects.size === 0) return
-                
-                // Create group data
-                const groupData = { id: 'effects', type: 'system' }
+            if (effects.size === 0) return;
+            
+            // Create group data
+            const groupData = { id: 'effects', type: 'system' };
             
             const actions = [...effects].map(([effectId,effectData]) => {
                 const active = this.actor.effects.some(effect => effect.id === effectId && !effect?.disabled)
                 ? ' active'
-                : ''
+                : '';
                 return {
                     id: effectId,
                     name: effectData.name,
@@ -282,11 +322,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     cssClass: `toggle${active}`,
                     listName: this.#getListName(actionType, effectData.name),
                     system: { actionType, actionId: effectId }
-                }
-            })
+                };
+            });
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -294,39 +334,38 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildFeatures () {
-            if (this.items.size === 0) return
-                //if () return
+            if (this.items.size === 0) return;
+            
+            const actionType = 'item';
+            const actionsMap = new Map();
+            
+            // Get features
+            for (const [itemId, itemData] of this.items) {
+                if (itemData.type === 'ability') continue;
                 
-                const actionType = 'item'
-                const actionsMap = new Map()
+                const type = itemData.type;
                 
-                // Get features
-                for (const [itemId, itemData] of this.items) {
-                    if (itemData.type === 'ability') continue
-                        
-                        const type = itemData.type
-                        
-                        const typeMap = actionsMap.get(type) ?? new Map()
-                        typeMap.set(itemId, itemData)
-                        actionsMap.set(type, typeMap)
-                        }
+                const typeMap = actionsMap.get(type) ?? new Map();
+                typeMap.set(itemId, itemData);
+                actionsMap.set(type, typeMap);
+            }
             
             for (const [type, typeMap] of actionsMap) {
-                const groupId = ITEM_TYPE[type]?.groupId
+                const groupId = ITEM_TYPE[type]?.groupId;
                 
                 // Create group data
-                if (!groupId) continue
-                    const groupData = { id: groupId, type: 'system' }
+                if (!groupId) continue;
+                const groupData = { id: groupId, type: 'system' };
                 
                 // Get actions
                 const actions = await Promise.all([...typeMap].map(async ([itemId, itemData]) => {
-                    const name = itemData.name
+                    const name = itemData.name;
                     
-                    let config = {}
-                    const content = await itemData.system.toEmbed(config)
+                    let config = {};
+                    const content = await itemData.system.toEmbed(config);
                     const tooltip = {
                         content: content.outerHTML
-                    }
+                    };
                     
                     return {
                         id: itemId,
@@ -337,10 +376,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                         info2: type === "class" ? { text: `${itemData.system.level}`} : null,
                         tooltip,
                         system: { actionType, actionId: itemId }
-                    }
-                }))
+                    };
+                }));
                 // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
+                this.addActions(actions, groupData);
             }
             
         }
@@ -350,30 +389,30 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildFreeStrikes () {
-            if (this.items.size === 0) return
-                
-                const actionType = 'item'
-                const actionsMap = new Map()
-                
-                // Get free strikes
-                for (const [itemId, itemData] of this.items) {
-                    if (itemData.system.category != 'freeStrike') continue
-                        actionsMap.set(itemId, itemData)
-                        }
+            if (this.items.size === 0) return;
+            
+            const actionType = 'item';
+            const actionsMap = new Map();
+            
+            // Get free strikes
+            for (const [itemId, itemData] of this.items) {
+                if (itemData.system.category != 'freeStrike') continue;
+                actionsMap.set(itemId, itemData);
+            }
             
             // Create group data
-            const groupData = { id: 'free-strike', type: 'system' }
+            const groupData = { id: 'free-strike', type: 'system' };
             
             // Get actions
             const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
-                const name = itemData.name
-                const info = this.#getAbilityInfo(itemData)
+                const name = itemData.name;
+                const info = this.#getAbilityInfo(itemData);
                 
-                let config = {}
-                const content = await itemData.system.toEmbed(config)
+                let config = {};
+                const content = await itemData.system.toEmbed(config);
                 const tooltip = {
                     content: content.outerHTML
-                }
+                };
                 
                 return {
                     id: itemId,
@@ -384,11 +423,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     listName: this.#getListName(actionType, name),
                     tooltip,
                     system: { actionType, actionId: itemId }
-                }
-            }))
+                };
+            }));
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -396,11 +435,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildHeroTokens () {
-            const actionType = 'heroTokens'
+            const actionType = 'heroTokens';
             
             
             // Create group data
-            const groupData = { id: 'hero-tokens', type: 'system' }
+            const groupData = { id: 'hero-tokens', type: 'system' };
             
             // Get actions
             const actions = [{
@@ -419,10 +458,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 info2: { text: `${game.actors.heroTokens.value} Hero Tokens` },
                 listName: this.#getListName(actionType, 'heroTokensSurges'),
                 system: { actionType, actionId: 'heroTokensSurges' }
-            }]
+            }];
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -430,14 +469,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildNPCFreeStrikes () {
-            const actionType = 'npcFreeStrike'
+            const actionType = 'npcFreeStrike';
             
             // Create group data
-            const groupData = { id: 'free-strike', type: 'system' }
+            const groupData = { id: 'free-strike', type: 'system' };
             
             // Get actions
             
-            const name = 'Free Strike'
+            const name = 'Free Strike';
             const actions = [{
                 id: 'npcFreeStrike',
                 name,
@@ -445,10 +484,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 info1: { text: `${this.actor.system.freeStrike.value}` },
                 listName: this.#getListName(actionType, name),
                 system: { actionType, actionId: 'npcFreeStrike' }
-            }]
+            }];
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         
@@ -457,29 +496,29 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildProjects () {
-            if (this.items.size === 0) return
-                
-                const actionType = 'item'
-                const actionsMap = new Map()
-                
-                // Get free strikes
-                for (const [itemId, itemData] of this.items) {
-                    if (itemData.type != 'project') continue
-                        actionsMap.set(itemId, itemData)
-                        }
+            if (this.items.size === 0) return;
+            
+            const actionType = 'item';
+            const actionsMap = new Map();
+            
+            // Get free strikes
+            for (const [itemId, itemData] of this.items) {
+                if (itemData.type != 'project') continue;
+                actionsMap.set(itemId, itemData);
+            }
             
             // Create group data
-            const groupData = { id: 'project', type: 'system' }
+            const groupData = { id: 'project', type: 'system' };
             
             // Get actions
             const actions = await Promise.all([...actionsMap].map(async ([itemId, itemData]) => {
-                const name = itemData.name
+                const name = itemData.name;
                 
-                let config = {}
-                const content = await itemData.system.toEmbed(config)
+                let config = {};
+                const content = await itemData.system.toEmbed(config);
                 const tooltip = {
                     content: content.outerHTML
-                }
+                };
                 
                 return {
                     id: itemId,
@@ -489,10 +528,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     listName: this.#getListName(actionType, name),
                     tooltip,
                     system: { actionType, actionId: itemId }
-                }
-            }))
+                };
+            }));
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -500,10 +539,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildRecoveries () {
-            const actionType = 'recoveries'
+            const actionType = 'recoveries';
             
             // Create group data
-            const groupData = { id: 'recoveries', type: 'system' }
+            const groupData = { id: 'recoveries', type: 'system' };
             
             // Get actions
             const actions = [{
@@ -513,10 +552,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 info1: { text: `${this.actor.system.recoveries.value} / ${this.actor.system.recoveries.max}` },
                 listName: this.#getListName(actionType, 'recoveries'),
                 system: { actionType, actionId: 'recoveries' }
-            }]
+            }];
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -524,10 +563,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildRespite () {
-            const actionType = 'respite'
+            const actionType = 'respite';
             
             // Create group data
-            const groupData = { id: 'respite', type: 'system' }
+            const groupData = { id: 'respite', type: 'system' };
             
             // Get actions
             const actions = [{
@@ -536,10 +575,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 img: "icons/svg/house.svg",
                 listName: this.#getListName(actionType, 'respite'),
                 system: { actionType, actionId: 'respite' }
-            }]
+            }];
             
             // TAH Core method to add actions to the action list
-            this.addActions(actions, groupData)
+            this.addActions(actions, groupData);
         }
         
         /**
@@ -549,13 +588,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {object}
          */
         #getAbilityInfo (data) {
-            const categoryData = this.#getCategoryData(data)
-            const resourceData = this.#getResourceData(data)
+            const categoryData = this.#getCategoryData(data);
+            const resourceData = this.#getResourceData(data);
             
             return {
                 info1: { text: categoryData },
                 info2: { text: resourceData }
-            }
+            };
         }
         
         /**
@@ -565,10 +604,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {string}
          */
         #getCategoryData (data) {
-            if (!data?.system || data.system.category === "") return ''
-                const category = data.system.category
-                return coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Category.' + `${category[0].toUpperCase()}` + `${category.slice(1)}`)
-                }
+            if (!data?.system || data.system.category === "") return '';
+            const category = data.system.category;
+            return coreModule.api.Utils.i18n('DRAW_STEEL.Item.ability.Category.' + `${category[0].toUpperCase()}` + `${category.slice(1)}`);
+        }
         
         /**
          * Get resource cost
@@ -577,9 +616,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {string}
          */
         #getResourceData (data) {
-            if (!data?.system || !data.system?.resource || data.system?.resource === 0) return ''
-                return  `${data.system.resource}`
-                }
+            if (!data?.system || !data.system?.resource || data.system?.resource === 0) return '';
+            return `${data.system.resource}`;
+        }
         
         /**
          * Get list name
@@ -606,9 +645,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 r: "🆁",
                 i: "🅸",
                 p: "🅿"
-            }
+            };
             return icons[name.charAt(0)] + name.substring(1);
         }
     }
     
-})
+});

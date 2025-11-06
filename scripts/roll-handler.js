@@ -74,6 +74,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 case 'conditions':
                     actor.toggleStatusEffect(actionId)
                     break
+                case 'combat':
+                    if (actionId === 'endTurn'){
+                        game.combat.endTurn()
+                    }
+                    break
                 case 'effects':
                     const effect = actor.effects.find(effect => effect.id === actionId)
                     if (!effect) return

@@ -13,7 +13,7 @@
   "version": "This is auto replaced",
   "compatibility": {
     "minimum": "13",
-    "verified": "13.347"
+    "verified": "14.360"
   },
   "esmodules": [
     "./scripts/init.js"
@@ -39,7 +39,7 @@
         "compatibility": [
           {
             "minimum": "0.8.0",
-            "verified": "0.8.1"
+            "verified": "1.0.0"
           }
         ]
       }
